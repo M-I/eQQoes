@@ -9,7 +9,9 @@ var nodemailer      = require('nodemailer')
     ;
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport  = nodemailer.createTransport("SMTP",{
-  service: "",
+  host: "", // hostname
+  secureConnection: true, // use SSL
+  port: 465, // port for secure SMTP
    auth: {
     user: "",
     pass: ""
@@ -54,7 +56,7 @@ request(
                        from: "First eQQo ✔"
                        , to: doc.value.sharers
                        , subject: "Hi - Here comes the first eQQo for " + doc.value.sharee + " ✔"
-                       , text:  "'" + doc.value.sharee + "' is currently shared (with <3) between " + doc.value.sharers[0] + " & " + doc.value.sharers[1] + " until the " + doc.value.schedule[2] + "/" + doc.value.schedule[1] + "/" + doc.value.schedule[0] + ".  You shall receive another eQQo the previous day, so that you remember. :).\r\n \r\n  Until then, take care!" // plaintext body
+                       , text:  "'" + doc.value.sharee + "' is currently shared (with <3) between " + doc.value.sharers[0] + " & " + doc.value.sharers[1] + " until the " + doc.value.schedule[2] + "/" + doc.value.schedule[1] + "/" + doc.value.schedule[0] + ". The QloQ has started. You shall receive another eQQo the previous day, so that you remember. :).\r\n \r\n  Until then, take care!" // plaintext body
                    };
                   }else if(doc.value.lang == null && doc.value.schedule == null){
                    mailOptions = {
@@ -68,7 +70,7 @@ request(
                        from: "First eQQo ✔"
                        , to: doc.value.sharers
                        , subject: "Hi - Here comes the first eQQo for " + doc.value.sharee + " ✔"
-                       , text:  "'" + doc.value.sharee + "' is currently shared (with <3) between " + doc.value.sharers[0] + " & " + doc.value.sharers[1] + " until the " + doc.value.schedule[2] + "/" + doc.value.schedule[1] + "/" + doc.value.schedule[0] + ".  You shall receive another eQQo the previous day, so that you remember. :).\r\n \r\n  Until then, take care!" // plaintext body
+                       , text:  "'" + doc.value.sharee + "' is currently shared (with <3) between " + doc.value.sharers[0] + " & " + doc.value.sharers[1] + " until the " + doc.value.schedule[2] + "/" + doc.value.schedule[1] + "/" + doc.value.schedule[0] + ". The QloQ has started. You shall receive another eQQo the previous day, so that you remember it. :).\r\n \r\n  Until then, take care!" // plaintext body
                    };
                   }
                 console.log('mailOptions configured');        
@@ -107,7 +109,7 @@ request(
     });
 };
 exports.a_e = a_e;
-// GET database to see if there are final eQQoes waiting to be eQQoed
+// GET database to see if there are final eQQœs waiting to be eQQoed
 var f_e = function(){
 request(
     {
@@ -194,12 +196,10 @@ var starts = function(){
         }
     })
 };
-// Starting the QloQ
 exports.starts = starts;
+// Starting the QloQ
 var oQloQ = function(){
     console.log('Starting the QloQ')
         setInterval(f_e, 5 * 61 * 1000);//in milliseconds
 };
 exports.oQloQ = oQloQ;
-starts();
-oQloQ();

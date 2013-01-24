@@ -3,9 +3,12 @@
 i.e heavy use of console.log
 just to be sure everything is going according to plan
 */
-var nodemailer      = require('nodemailer')
+var https           = require('https')
+    , nodemailer    = require('nodemailer')
     , request       = require('request')
     , follow        = require('follow')
+    , a_e           = require('./auto_eQQo.js')
+    , f_e           = require('./final_eQQo.js')
     ;
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport  = nodemailer.createTransport("SMTP",{
@@ -26,7 +29,7 @@ var smtpTransport  = nodemailer.createTransport("SMTP",{
 // eQQoing starts
 var starts = function(){
     console.log('eQQoing starts');
-    follow("https://localhost:5984/eqqoes/", function(error, change) {
+    follow("localhost:5984/eqqoes/", function(error, change) {
         if(!error && change.seq > 34){
             console.log("Got change number " + change.seq + ": " + change.id)
                 console.log("Must be new eQQoers! Imma read db")
